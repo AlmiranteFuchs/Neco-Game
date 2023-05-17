@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(simple_game)
+
+# Set the C++ standard to C++11
+set(CMAKE_CXX_STANDARD 11)
+
+# Find the SDL2 library
+find_package(SDL2 REQUIRED)
+
+# Find the SDL2_image library
+find_package(SDL2_image REQUIRED)
+
+# Set the include directories
+include_directories(
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_INCLUDE_DIRS}
+)
+
+# Set the source files
+set(SOURCES
+    libs/game.cpp
+    libs/object.cpp
+    libs/scenes/test_scene.cpp
+    libs/scenes/gameplay_scene.cpp
+    main.cpp
+)
+
+# Add compile option for SDL2_image include directory
+add_compile_options(-I/usr/local/include/SDL2)
+
+# Set the executable name and source files
+add_executable(simple_game ${SOURCES})
+target_include_directories(simple_game PRIVATE libs)
+target_include_directories(simple_game PRIVATE libs/scenes)
+
+# Link the SDL2 and SDL2_image libraries to the executable
+target_link_libraries(simple_game SDL2_image ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
