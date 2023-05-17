@@ -1,38 +1,50 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(simple_game)
 
-# Set the C++ standard to C++11
-set(CMAKE_CXX_STANDARD 11)
+# Cpp
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_PREFIX_PATH "/home/bcc/bfss21/local")
+
+
+# Set the path to the SDL2 library and header files
+set(SDL2_LIBRARY "/home/bcc/bfss21/local/lib/libSDL2.so")
+set(SDL2_INCLUDE_DIR "/home/bcc/bfss21/local/include/SDL2")
+
+set(SDL2_IMAGE_LIB "/home/bcc/bfss21/local/lib/libSDL2_image-2.0.so")
+set(SDL2_IMAGE_INCLUDE_DIR "/home/bcc/bfss21/local/lib/include/SDL2")
+
+
+#/local/lib/include/SDL2
+
+
+# Not shitty dinf pcs
+#set(SDL2_LIBRARY "/home/bcc/bfss21/local/lib/libSDL2.so")
+#set(SDL2_INCLUDE_DIR "/usr/include/SDL2")
+
+
+
+include_directories(${SDL2_INCLUDE_DIR})
+include_directories(${SDL2_IMAGE_INCLUDE_DIR})
+
 
 # Find the SDL2 library
 find_package(SDL2 REQUIRED)
 
-# Find the SDL2_image library
+# Dependencies
 find_package(SDL2_image REQUIRED)
+include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
-# Set the include directories
-include_directories(
-    ${SDL2_INCLUDE_DIRS}
-    ${SDL2_IMAGE_INCLUDE_DIRS}
-)
+find_library(SDL2_IMAGE_LIB SDL2_image /usr/local/lib)
 
-# Set the source files
-set(SOURCES
-    libs/game.cpp
-    libs/object.cpp
-    libs/scenes/test_scene.cpp
-    libs/scenes/gameplay_scene.cpp
-    main.cpp
-)
 
-# Add compile option for SDL2_image include directory
-add_compile_options(-I/usr/local/include/SDL2)
+# Add the executable target
+add_executable(simple_game main.cpp libs/game.cpp libs/object.cpp)
 
-# Set the executable name and source files
-add_executable(simple_game ${SOURCES})
+# Add ??
 target_include_directories(simple_game PRIVATE libs)
-target_include_directories(simple_game PRIVATE libs/scenes)
 
-# Link the SDL2 and SDL2_image libraries to the executable
-target_link_libraries(simple_game SDL2_image ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+
+# Link the executable with the SDL2 library
+target_link_libraries(simple_game ${SDL2_LIBRARY})
+target_link_libraries(simple_game ${SDL2_IMAGE_LIB})

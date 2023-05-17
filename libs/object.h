@@ -14,6 +14,7 @@ private:
     SDL_Rect src;
     SDL_Rect dest;
 
+    int x, y, z, w, h;
     int rotation = 0;
     std::string name;
 
@@ -21,9 +22,16 @@ private:
     SDL_Renderer *renderer;
 
 public:
-    Object(std::string obj_name)
+    Object(std::string obj_name, int x, int y, int w, int h);
     {
         this->name = obj_name;
+        this->x = x;
+        this->y = y;
+        this->w = w;
+        this->h = h;
+
+        this->src = {0, 0, w, h};
+        this->dest = {x, y, w, h};
     };
     ~Object(){};
 
