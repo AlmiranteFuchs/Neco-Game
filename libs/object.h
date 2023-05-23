@@ -22,7 +22,7 @@ private:
     SDL_Renderer *renderer;
 
 public:
-    Object(std::string obj_name, int x, int y, int w, int h);
+    Object(std::string obj_name, int x, int y, int w, int h)
     {
         this->name = obj_name;
         this->x = x;

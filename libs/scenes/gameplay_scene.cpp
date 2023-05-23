@@ -12,11 +12,10 @@ public:
         // Defines object and stuff for this scene gameplay
 
         // New Player object
-        Object *player = new Object("player");
+        Object *player = new Object("player", 0, 0, 175, 88);
         player->setImage("../assets/player.png", renderer);
         // Place the player in the middle of the height of the screen
-        player->SetDest(0, HEIGHT / 2, 175, 88);
-        player->SetSrc(0, 0, 175, 88);
+        player->SetDest(0, HEIGHT / 2, player->GetDest().w, player->GetDest().h);
         objects.push_back(player);
 
         // Generate pipes
@@ -45,7 +44,7 @@ private:
     int pipe_speed = 5;
 
     // List of pipes
-    std::list<Object*> pipes;
+    std::list<Object *> pipes;
 
     // Generate pipes
     void _generate_pipes()
@@ -57,23 +56,21 @@ private:
             int x_gap = i * pipe_horizontal_gap;
 
             // Create a pipe for above
-            Object *pipe_above = new Object("pipe_above_" + i);
+            Object *pipe_above = new Object("pipe_above_" + i, 0, 0, 525, 565);
             pipe_above->setImage("../assets/pipe.png", renderer);
 
             int random_range = rand() % pipe_above_max_height + pipe_above_min_height;
 
-            pipe_above->SetDest(x_gap + 400, -random_range, 525, 565);
-            pipe_above->SetSrc(0, 0, 525, 565);
+            pipe_above->SetDest(x_gap + 400, -random_range, pipe_above->GetDest().w, pipe_above->GetDest().h);
 
             // Push the pipe to the list
             pipes.push_back(pipe_above);
             objects.push_back(pipe_above);
 
             // Create a pipe for below
-            Object *pipe_below = new Object("pipe_below_" + i);
+            Object *pipe_below = new Object("pipe_below_" + i, 0, 0, 525, 565);
             pipe_below->setImage("../assets/pipe.png", renderer);
-            pipe_below->SetDest(x_gap + 400, -random_range + pipe_gap, 525, 565);
-            pipe_below->SetSrc(0, 0, 525, 565);
+            pipe_below->SetDest(x_gap + 400, -random_range + pipe_gap, pipe_below->GetDest().w, pipe_below->GetDest().h);
             // rotate the pipe in vertical
             pipe_below->SetRotation(180);
 
@@ -88,7 +85,7 @@ private:
     {
 
         // Update the position of the pipes
-        for (std::list<Object*>::iterator it = pipes.begin(); it != pipes.end(); it++)
+        for (std::list<Object *>::iterator it = pipes.begin(); it != pipes.end(); it++)
         {
             // Get the pipe
             Object *pipe = *it;
