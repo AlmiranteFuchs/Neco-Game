@@ -39,7 +39,7 @@ private:
     // Scene variables
     int pipe_above_max_height = 300;
     int pipe_above_min_height = 200;
-    int pipe_gap = 800;
+    int pipe_gap = 900;
     int pipe_horizontal_gap = 500;
     int pipe_speed = 5;
 
@@ -51,7 +51,7 @@ private:
     {
         // Generate pair of 6 pipes
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
         {
             int x_gap = i * pipe_horizontal_gap;
 
@@ -61,7 +61,8 @@ private:
 
             int random_range = rand() % pipe_above_max_height + pipe_above_min_height;
 
-            pipe_above->SetDest(x_gap + 400, -random_range, pipe_above->GetDest().w, pipe_above->GetDest().h);
+            // pipe_above->SetDest(WIDTH + x_gap, -random_range, pipe_above->GetDest().w, pipe_above->GetDest().h);
+            _generate_pipe(pipe_above, true, x_gap);
 
             // Push the pipe to the list
             pipes.push_back(pipe_above);
@@ -70,10 +71,9 @@ private:
             // Create a pipe for below
             Object *pipe_below = new Object("pipe_below_" + i, 0, 0, 525, 565);
             pipe_below->setImage("../assets/pipe.png", renderer);
-            pipe_below->SetDest(x_gap + 400, -random_range + pipe_gap, pipe_below->GetDest().w, pipe_below->GetDest().h);
-            // rotate the pipe in vertical
-            pipe_below->SetRotation(180);
-
+            // pipe_below->SetDest(WIDTH + x_gap, -random_range + pipe_gap, pipe_below->GetDest().w, pipe_below->GetDest().h);
+            _generate_pipe(pipe_below, false, x_gap);
+            
             // Push the pipe to the list
             pipes.push_back(pipe_below);
             objects.push_back(pipe_below);
@@ -95,6 +95,27 @@ private:
 
             // Update the position of the pipe
             pipe->SetDest(pipe_dest.x - pipe_speed, pipe_dest.y, pipe_dest.w, pipe_dest.h);
+
+            // If pipe outside of window box
+            if (pipe_dest.x + pipe_dest.w + pipe_horizontal_gap < 0)
+            {
+                // Reset the position of the pipe
+                _generate_pipe(pipe, pipe->GetRotation() == 0, pipe_horizontal_gap - 200);
+            }
+        }
+    }
+
+    // Generate pipe
+    void _generate_pipe(Object *pipe, bool above, int x_gap)
+    {
+        int random_range = rand() % pipe_above_max_height + pipe_above_min_height;
+
+        pipe->SetDest(WIDTH + x_gap, -random_range, pipe->GetDest().w, pipe->GetDest().h);
+
+        if (!above)
+        {
+            pipe->SetDest(WIDTH + x_gap, -random_range + pipe_gap, pipe->GetDest().w, pipe->GetDest().h);
+            pipe->SetRotation(180);
         }
     }
 };
