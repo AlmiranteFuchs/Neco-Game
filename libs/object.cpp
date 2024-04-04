@@ -10,10 +10,16 @@ void Object::SetSrc(int x, int y, int w, int h)
 
 void Object::SetDest(int x, int y, int w, int h)
 {
-    dest.x = x;
-    dest.y = y;
+    // Get Acceleration of the object
+    Acceleration acceleration = GetAcceleration();
+
+    dest.x = x + acceleration.ax;
+    dest.y = y + acceleration.ay;
     dest.w = w;
     dest.h = h;
+
+    // Remove acceleration
+    SetAcceleration(0, 0);
 }
 
 void Object::setImage(std::string path, SDL_Renderer *ren)

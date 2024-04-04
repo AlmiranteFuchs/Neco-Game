@@ -21,6 +21,7 @@ public:
         // Generate pipes
         _generate_pipes();
     }
+
     ~GameplayScene()
     {
         // Clear the objects list
@@ -33,6 +34,9 @@ public:
     {
         // Update the position of the pipes
         _update_pipes();
+
+        // Update the position of the player
+        _update_player();
     }
 
 private:
@@ -42,6 +46,9 @@ private:
     int pipe_gap = 900;
     int pipe_horizontal_gap = 500;
     int pipe_speed = 5;
+
+    // Player variables
+    int player_speed = 5;
 
     // List of pipes
     std::list<Object *> pipes;
@@ -73,7 +80,7 @@ private:
             pipe_below->setImage("../assets/pipe.png", renderer);
             // pipe_below->SetDest(WIDTH + x_gap, -random_range + pipe_gap, pipe_below->GetDest().w, pipe_below->GetDest().h);
             _generate_pipe(pipe_below, false, x_gap);
-            
+
             // Push the pipe to the list
             pipes.push_back(pipe_below);
             objects.push_back(pipe_below);
@@ -117,6 +124,21 @@ private:
             pipe->SetDest(WIDTH + x_gap, -random_range + pipe_gap, pipe->GetDest().w, pipe->GetDest().h);
             pipe->SetRotation(180);
         }
+    }
+
+    // Update player
+    void _update_player()
+    {
+        // Get the player object
+        Object *player = objects.front();
+
+        SDL_Rect player_dest = player->GetDest();
+
+        // Set the acceleration of the player
+        player->SetAcceleration(0, 1.5);
+
+        // // Update the position of the player
+        player->SetDest(player_dest.x, player_dest.y, player_dest.w, player_dest.h);
     }
 };
 
