@@ -13,7 +13,10 @@ public:
         this->name = obj_name;
         this->renderer = renderer;
     }
-    ~Scene(){
+    ~Scene()
+    {
+        for (auto obj : objects)
+            delete obj;
         objects.clear();
     }
 
@@ -31,7 +34,6 @@ protected:
 
     // renderer
     SDL_Renderer *renderer;
-
 
     // List of Game Objects in the scene
     std::list<Object *> objects;
